@@ -13,22 +13,31 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class DiaryService {
+
     private final DiaryRepository diaryRepository;
 
+    public ResponseEntity<List<DiaryDTO>> getAllDiaries() {
+        List<Diary> diaries = diaryRepository.findAll();
+        List<DiaryDTO> diaryDTOs = diaries.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
 
-    public ResponseEntity<List<Diary>> getAllDiaries() {
-        return ResponseEntity.status(HttpStatus.OK).body(diaryRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(diaryDTOs);
     }
 
-    public ResponseEntity<?> getDiaryById(Long diaryId) {
+    public ResponseEntity<?> getDiaryById(UUID diaryId) {
         Optional<Diary> diary = diaryRepository.findById(diaryId);
-        if (diary.isPresent())
-            return ResponseEntity.status(HttpStatus.OK).body(diary.get());
+        if (diary.isPresent()) {
+            DiaryDTO diaryDTO = convertToDTO(diary.get());
+            return ResponseEntity.status(HttpStatus.OK).body(diaryDTO);
+        }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Diary not found with id " + diaryId);
     }
 
@@ -40,7 +49,10 @@ public class DiaryService {
         // 날짜 범위로 다이어리 검색
         List<Diary> diaries = diaryRepository.findByCreatedAtBetween(startOfDay, endOfDay);
         if (!diaries.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body(diaries);
+            List<DiaryDTO> diaryDTOs = diaries.stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList());
+            return ResponseEntity.status(HttpStatus.OK).body(diaryDTOs);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No diaries found on date: " + createdDate);
     }
@@ -50,39 +62,52 @@ public class DiaryService {
         Diary createdDiary = this.setEntityData(diaryDTO, newDiary);
 
         Diary savedDiary = diaryRepository.save(createdDiary);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedDiary);
+        DiaryDTO savedDiaryDTO = convertToDTO(savedDiary);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedDiaryDTO);
     }
 
-    public ResponseEntity<?> updateDiary(Long diaryId, DiaryDTO diaryDTO) {
+    public ResponseEntity<?> updateDiary(UUID diaryId, DiaryDTO diaryDTO) {
         Optional<Diary> diaryOptional = diaryRepository.findById(diaryId);
         if (diaryOptional.isPresent()) {
             Diary diary = diaryOptional.get();
             Diary changedDiary = this.setEntityData(diaryDTO, diary);
 
-            return ResponseEntity.status(HttpStatus.OK).body(diaryRepository.save(changedDiary));
+            Diary savedDiary = diaryRepository.save(changedDiary);
+            DiaryDTO savedDiaryDTO = convertToDTO(savedDiary);
+            return ResponseEntity.status(HttpStatus.OK).body(savedDiaryDTO);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Diary not found with id " + diaryId);
         }
     }
 
-    public ResponseEntity<?> deleteDiary(Long diaryId) {
-        Optional<Diary> userOptional = diaryRepository.findById(diaryId);
-        if (userOptional.isPresent()) {
+    public ResponseEntity<?> deleteDiary(UUID diaryId) {
+        Optional<Diary> diaryOptional = diaryRepository.findById(diaryId);
+        if (diaryOptional.isPresent()) {
             diaryRepository.deleteById(diaryId);
             return ResponseEntity.status(HttpStatus.OK).body("Diary deleted successfully");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Diary not found with id " + diaryId);
     }
 
+    // Diary 엔티티를 업데이트하는 메서드
     private Diary setEntityData(DiaryDTO diaryDTO, Diary diary) {
-//        diary.setId(diaryDTO.getId());
         diary.setTitle(diaryDTO.getTitle());
         diary.setContent(diaryDTO.getContent());
-//         createdAt이 null일 경우 현재 시간으로 설정
+        // createdAt이 null일 경우 현재 시간으로 설정
         if (diary.getCreatedAt() == null) {
             diary.setCreatedAt(LocalDateTime.now());
         }
-
         return diary;
+    }
+
+    // Diary 엔티티를 DiaryDTO로 변환하는 메서드
+    private DiaryDTO convertToDTO(Diary diary) {
+        DiaryDTO diaryDTO = new DiaryDTO();
+        diaryDTO.setId(diary.getId());
+        diaryDTO.setTitle(diary.getTitle());
+        diaryDTO.setContent(diary.getContent());
+        diaryDTO.setCreatedAt(diary.getCreatedAt());
+//        diaryDTO.setModifiedDate(diary.getModifiedDate());
+        return diaryDTO;
     }
 }

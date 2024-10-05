@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/diary")
@@ -23,7 +24,7 @@ public class DiaryController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<?> getDiaryById(@PathVariable Long id) {
+    public ResponseEntity<?> getDiaryById(@PathVariable UUID id) {
         return diaryService.getDiaryById(id);
     }
 
@@ -37,13 +38,13 @@ public class DiaryController {
     public ResponseEntity<?> createDiary(@RequestBody DiaryDTO diaryDTO){ return diaryService.createDiary(diaryDTO);}
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id,
+    public ResponseEntity<?> updateUser(@PathVariable UUID id,
                                         @RequestBody DiaryDTO diaryDTO) {
         return diaryService.updateDiary(id, diaryDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
         return diaryService.deleteDiary(id);
     }
 

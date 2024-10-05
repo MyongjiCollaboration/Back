@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-public class DiaryDTO {
+public class CommentDTO {
     private UUID id;
-    private String title, content;
+    private String content;
     private LocalDateTime createdAt;
 }

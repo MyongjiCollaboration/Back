@@ -4,6 +4,7 @@ import com.example.demo.dto.AlbumPhotoDto;
 import com.example.demo.dto.AlbumPhotoResponseDto;
 import com.example.demo.entity.Album;
 import com.example.demo.entity.AlbumPhoto;
+import com.example.demo.entity.Users;
 import com.example.demo.global.adapter.S3Adapter;
 import com.example.demo.repository.AlbumPhotoRepository;
 import lombok.RequiredArgsConstructor;

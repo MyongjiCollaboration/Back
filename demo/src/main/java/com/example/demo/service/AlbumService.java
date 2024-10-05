@@ -25,11 +25,11 @@ public class AlbumService {
     private final AlbumPhotoRepository albumPhotoRepository;
 
     // 앨범 생성
-    public String createAlbum(AlbumRequestDto albumRequestDto, Users user) {
+    public String createAlbum(Users user, AlbumRequestDto albumRequestDto) {
         Album album = new Album();
         album.setName(albumRequestDto.getName());
-//        Family family = user.getFamily();
-//        album.setFamily(family);
+        Family family = user.getFamily();
+        album.setFamily(family);
 
         albumRepository.save(album);
         return "앨범이 추가되었습니다";
@@ -66,7 +66,10 @@ public class AlbumService {
     }
 
     public List<AlbumResponseDto> getAllAlbums(Users user) {
-        List<Album> albums = albumRepository.findAll();
+        Family family = user.getFamily();
+        List<Album> albums = albumRepository.findByFamily(family);
+
+
         List<AlbumResponseDto> albumResponseDtoList = new ArrayList<>();
         for(Album album : albums) {
             AlbumResponseDto albumResponseDto = AlbumResponseDto.builder()

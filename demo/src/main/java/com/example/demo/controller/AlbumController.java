@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.authentication.user.AuthenticatedUser;
 import com.example.demo.dto.AlbumPhotoDto;
 import com.example.demo.dto.AlbumRequestDto;
 import com.example.demo.dto.AlbumResponseDto;
@@ -24,14 +25,14 @@ public class AlbumController {
 
     @PostMapping
     @Operation(summary = "앨범 생성")
-    public String createAlbum(@RequestBody AlbumRequestDto albumRequestDto, @RequestBody(required = false) Users user) {
-        return albumService.createAlbum(albumRequestDto, user);
+    public String createAlbum(@AuthenticatedUser Users user, @RequestBody AlbumRequestDto albumRequestDto) {
+        return albumService.createAlbum(user, albumRequestDto);
     }
 
     // 페이지네이션 미구현
     @GetMapping("/list")
     @Operation(summary = "앨범 리스트 조회")
-    public List<AlbumResponseDto> listAlbums(@RequestBody(required = false) Users user) {
+    public List<AlbumResponseDto> listAlbums(@AuthenticatedUser Users user) {
         return albumService.getAllAlbums(user);
     }
 

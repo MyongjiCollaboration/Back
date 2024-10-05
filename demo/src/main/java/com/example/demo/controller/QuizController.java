@@ -17,7 +17,7 @@ public class QuizController {
 
     @GetMapping()
     public QuizResponseDto getRandomQuiz() {
-        return quizService.getRandomQuiz();
+        return quizService.getDailyQuiz();
     }
 
     @PostMapping

@@ -23,11 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @GetMapping("/test")
-    @Operation(summary = "테스트")
-    public String test() {
-        return "test";
-    }
 
     // 회원 가입
     @PostMapping("/auth/signIn")

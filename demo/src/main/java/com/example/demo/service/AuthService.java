@@ -88,12 +88,12 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("찾을 수 없음"));
         if(user == null) {
             //throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
-            throw new RuntimeException();
+            throw new RuntimeException("유저를 찾을 수 없음");
         }
 
         if (!passwordHashEncryption.matches(loginDto.getPassword(), user.getPassword())) {
             //throw new UnauthorizedException(ErrorCode.UNAUTHORIZED_USER);
-            throw new RuntimeException();
+            throw new RuntimeException("비밀번호 오류");
         }
 
         String payload = user.getId().toString();

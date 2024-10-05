@@ -20,7 +20,6 @@ public class AuthenticationConfig implements WebMvcConfigurer {
         registry.addInterceptor(authenticationInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/auth/**")
-                .excludePathPatterns("/api/**")
                 .excludePathPatterns("/swagger-ui/**")
                 .excludePathPatterns("/swagger-ui.html")
                 .excludePathPatterns("/v3/api-docs/**")

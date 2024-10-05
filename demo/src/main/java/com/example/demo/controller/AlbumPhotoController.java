@@ -15,7 +15,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/albumPhoto")
-@Tag(name = "AlbumPhoto", description = "AlbumPhoto API")
+@Tag(name = "포토앨범", description = "AlbumPhoto API")
 public class AlbumPhotoController {
 
     private final AlbumPhotoService albumPhotoService;

@@ -1,13 +1,14 @@
 package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
-public class ReactionCount {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Getter
+@Setter
+public class ReactionCount extends BaseEntity{
+
     private int count;
 
     @ManyToOne

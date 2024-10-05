@@ -17,7 +17,7 @@ public class Family extends BaseEntity{
     String code;
 
     @OneToMany(mappedBy = "family", fetch = FetchType.EAGER)
-    private List<User> users;
+    private List<Users> users;
 
     @OneToMany(mappedBy = "family", fetch = FetchType.EAGER)
     private List<Event> events;

@@ -18,5 +18,5 @@ public class Comment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
-    private User user;
+    private Users user;
 }

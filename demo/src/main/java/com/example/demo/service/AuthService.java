@@ -5,8 +5,8 @@ import com.example.demo.authentication.PasswordHashEncryption;
 import com.example.demo.dto.request.user.LoginDto;
 import com.example.demo.dto.request.user.SignupDto;
 import com.example.demo.entity.Family;
-import com.example.demo.entity.User;
 import com.example.demo.authentication.JwtEncoder;
+import com.example.demo.entity.Users;
 import com.example.demo.repository.FamilyRepository;
 import com.example.demo.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -47,7 +47,7 @@ public class AuthService {
         log.info("비밀번호 암호화 성공");
 
 
-        User newUser = User.builder()
+        Users newUser = Users.builder()
                 .email(signupDto.getEmail())
                 .password(hashedPassword)
                 .name(signupDto.getNickname())
@@ -84,7 +84,7 @@ public class AuthService {
     // 로그인
     public void login(LoginDto loginDto, HttpServletResponse response) {
 
-        User user = this.userRepository.findByEmail(loginDto.getEmail())
+        Users user = this.userRepository.findByEmail(loginDto.getEmail())
                 .orElseThrow(() -> new RuntimeException("찾을 수 없음"));
         if(user == null) {
             //throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
@@ -107,8 +107,8 @@ public class AuthService {
         response.addHeader("Set-Cookie", cookie.toString());
     }
 
-    private void createFamily(User user){
-        List<User> userList = new ArrayList<>();
+    private void createFamily(Users user){
+        List<Users> userList = new ArrayList<>();
         userList.add(user);
         String familyCode = generateFamilyCode();
         Family family = Family.builder()

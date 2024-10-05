@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@Setter
 public class Comment extends BaseEntity {
 
     private String content;

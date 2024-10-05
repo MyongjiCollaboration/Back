@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@Setter
 public class AlbumPhoto extends BaseEntity {
 
     private String url;

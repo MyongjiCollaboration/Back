@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@Setter
 public class ReactionCount extends BaseEntity{
 
     private int count;

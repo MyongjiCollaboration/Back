@@ -1,6 +1,6 @@
 package com.example.demo.authentication.user;
 
-import com.example.demo.entity.User;
+import com.example.demo.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -20,10 +20,10 @@ public class AuthenticatedUserArgumentResolver implements HandlerMethodArgumentR
     }
 
     @Override
-    public User resolveArgument(final MethodParameter parameter,
-                                final ModelAndViewContainer mavContainer,
-                                final NativeWebRequest webRequest,
-                                final WebDataBinderFactory binderFactory) {
+    public Users resolveArgument(final MethodParameter parameter,
+                                 final ModelAndViewContainer mavContainer,
+                                 final NativeWebRequest webRequest,
+                                 final WebDataBinderFactory binderFactory) {
         return authenticationContext.getPrincipal();
     }
 }

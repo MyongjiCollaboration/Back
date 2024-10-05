@@ -1,7 +1,7 @@
 package com.example.demo.authentication;
 
 import com.example.demo.authentication.user.AuthenticationContext;
-import com.example.demo.entity.User;
+import com.example.demo.entity.Users;
 import com.example.demo.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +24,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String accessToken = AuthenticationExtractor.extract(request);
         UUID userId = UUID.fromString(jwtTokenProvider.getPayload(accessToken));
-        User user = this.userRepository.findById(userId).orElseThrow(() -> new RuntimeException());
+        Users user = this.userRepository.findById(userId).orElseThrow(() -> new RuntimeException());
         authenticationContext.setPrincipal(user);
         log.info("set user");
         return true;

@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@Setter
 public class QuizAnswer extends BaseEntity {
 
     private String content;

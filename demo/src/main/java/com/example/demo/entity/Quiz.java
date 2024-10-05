@@ -11,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
+@Setter
 public class Quiz extends BaseEntity{
 
     private String content;

@@ -1,12 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.QuizResponseDto;
+import com.example.demo.entity.Family;
 import com.example.demo.entity.Quiz;
 import com.example.demo.repository.QuizRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,5 +55,34 @@ public class QuizService {
 
     public Quiz saveQuiz(Quiz quiz) {
         return quizRepository.save(quiz);
+    }
+
+    // 자동으로 퀴즈를 생성하는 메소드
+    public void createDefaultQuizzes() {
+        // 미리 정의된 질문 리스트
+        List<String> questions = Arrays.asList(
+                "가족이 함께 가고 싶은 여행지는?",
+                "엄마가 가장 좋아하는 색은?",
+                "부모님이 처음 만난 장소는?",
+                "가족 여행에서 가장 기억에 남는 순간은?",
+                "어제 저녁 메뉴는?",
+                "형이 가장 좋아하는 운동은?",
+                "형제가 가장 좋아하는 게임은?",
+                "아빠가 가장 좋아하는 음악은?",
+                "아빠가 좋아하는 노래는?",
+                "누나가 자주 보는 TV 프로그램은?",
+                "아빠의 어린 시절 꿈은?",
+                "아빠의 취미는?",
+                "가족이 함께 만든 특별한 요리는?",
+                "가족 중 가장 잘 웃는 사람은?"
+        );
+
+        // 각 질문을 Quiz로 저장
+        for (String question : questions) {
+            Quiz quiz = Quiz.builder()
+                    .content(question)
+                    .build();
+            quizRepository.save(quiz);
+        }
     }
 }

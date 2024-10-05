@@ -22,7 +22,5 @@ public class Family extends BaseEntity{
     @OneToMany(mappedBy = "family", fetch = FetchType.EAGER)
     private List<Event> events;
 
-    @OneToMany(mappedBy = "family")
-    private List<Quiz> quizzes;
 
 }

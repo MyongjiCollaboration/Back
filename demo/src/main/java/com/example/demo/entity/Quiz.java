@@ -16,9 +16,6 @@ public class Quiz extends BaseEntity{
 
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "family")
-    private Family family;
 
     @OneToMany(mappedBy = "quiz")
     private List<QuizAnswer> quizAnswers;

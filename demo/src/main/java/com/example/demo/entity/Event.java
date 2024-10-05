@@ -1,13 +1,14 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Event extends BaseEntity {
     private String name;
     private String content;

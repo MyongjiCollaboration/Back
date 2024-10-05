@@ -1,12 +1,12 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 public class DiaryPhoto extends BaseEntity {
 

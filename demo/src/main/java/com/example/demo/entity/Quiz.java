@@ -1,15 +1,15 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 public class Quiz extends BaseEntity{
 

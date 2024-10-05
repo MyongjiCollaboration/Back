@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @PatchMapping("/famName")
-    public ResponseEntity<ResponseDto<Void>> changeFamName(@AuthenticatedUser User user, @Valid @RequestBody FamNameDto famName) {
+    public ResponseEntity<ResponseDto<Void>> changeFamName(@AuthenticatedUser User user,@Valid @RequestBody FamNameDto famName) {
         this.userService.changeFamName(user, famName);
         return new ResponseEntity<>(ResponseDto.res(HttpStatus.OK, "OK"), HttpStatus.OK);
     }

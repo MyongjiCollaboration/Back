@@ -29,7 +29,7 @@ public class EventService {
         Family family = user.getFamily();
         List<Event> events = family.getEvents();
         List<EventResponseData> eventResponseDataList = events.stream()
-                .map(event -> new EventResponseData(event.getContent(), event.getDate().toString(), event.getPlace()))
+                .map(event -> new EventResponseData(event.getContent(), event.getDate().toString(), event.getPlace(), event.getId()))
                 .collect(Collectors.toList());
 
         EventResponseDataList response = EventResponseDataList.of(eventResponseDataList);
@@ -68,7 +68,6 @@ public class EventService {
     public void deleteEvent(UUID eventId, User user) {
         Event oldEvent = this.eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("삭제할 수 없음"));
-
         validateEvent(oldEvent, user);
         this.eventRepository.delete(oldEvent);
     }

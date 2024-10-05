@@ -24,6 +24,7 @@ public class UserService {
 
     public void changeFamName(User user, FamNameDto famName) {
         Family family = user.getFamily();
+        log.info("change family name to {}", family.getName());
         family.setName(famName.getFamName());
         this.familyRepository.save(family);
     }

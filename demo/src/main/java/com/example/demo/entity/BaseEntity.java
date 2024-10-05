@@ -12,6 +12,7 @@ import java.util.UUID;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter
+@Setter
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "uuid2")

@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
+@Setter
 public class Album extends BaseEntity{
 
     private String name;

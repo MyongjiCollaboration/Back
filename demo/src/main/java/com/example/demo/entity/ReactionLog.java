@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@Setter
 public class ReactionLog extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

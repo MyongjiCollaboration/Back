@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Setter
 public class Diary extends BaseEntity {
 
     private String title;

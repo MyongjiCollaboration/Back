@@ -1,20 +1,21 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
-@Entity
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
 @Setter
 public class Album extends BaseEntity{
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family")
     private Family family;
 

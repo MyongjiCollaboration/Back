@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Event {
+public class Event extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Data
-public class Album {
+public class Album extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

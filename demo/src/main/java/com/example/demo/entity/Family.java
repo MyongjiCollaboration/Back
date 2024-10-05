@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class Family {
+public class Family extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

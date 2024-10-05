@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class DiaryPhoto {
+public class DiaryPhoto extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

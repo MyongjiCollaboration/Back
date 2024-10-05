@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class ReactionLog {
+public class ReactionLog extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

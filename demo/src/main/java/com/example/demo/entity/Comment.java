@@ -1,19 +1,22 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-@Data
 public class Comment extends BaseEntity {
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary")
     private Diary diary;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
-    private Users user;
+    private User user;
 }

@@ -1,23 +1,24 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-@Data
 public class ReactionLog extends BaseEntity {
-
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reaction")
     private Reaction reaction;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
-    private Users sender;
+    private User sender;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
-    private Users receiver;
+    private User receiver;
 
 }

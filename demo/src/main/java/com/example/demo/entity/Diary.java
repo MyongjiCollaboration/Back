@@ -1,20 +1,23 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Diary extends BaseEntity {
 
     private String title;
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
-    private Users user;
+    private User user;
 
     @OneToMany(mappedBy = "diary")
     private List<Comment> comments;

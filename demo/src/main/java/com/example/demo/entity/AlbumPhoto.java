@@ -1,15 +1,18 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-@Data
 public class AlbumPhoto extends BaseEntity {
 
     private String url;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album")
     private Album album;
 }

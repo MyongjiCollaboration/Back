@@ -1,18 +1,21 @@
 package com.example.demo.entity;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-@Data
 public class ReactionCount extends BaseEntity{
 
     private int count;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
-    private Users user;
+    private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reaction")
     private Reaction reaction;
 

@@ -1,15 +1,18 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 public class DiaryPhoto extends BaseEntity {
 
     private String url;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary")
     private Diary diary;
 }

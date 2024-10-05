@@ -1,17 +1,20 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 public class Quiz extends BaseEntity{
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family")
     private Family family;
 

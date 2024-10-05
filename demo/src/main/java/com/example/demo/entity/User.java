@@ -1,13 +1,17 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
 @Entity
-public class Users extends BaseEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@Setter
+public class User extends BaseEntity {
 
     private String name;
     private String email;
@@ -15,7 +19,7 @@ public class Users extends BaseEntity {
     private String password;
     private String birthDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "family")
     private Family family;
 

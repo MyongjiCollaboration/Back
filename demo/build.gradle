@@ -31,6 +31,25 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'//JDBC
+	runtimeOnly 'com.mysql:mysql-connector-j'//MySQL
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'//JPA
+
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'//JWT
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'//JWT
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'//JWT
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'//JAXB
+
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	//Querydsl 추가
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' //AWS
 }
 
 tasks.named('test') {

@@ -1,19 +1,25 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+
 import java.util.List;
 
-@Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
+@Setter
 public class Family extends BaseEntity{
 
     String name;
+    String code;
 
-    @OneToMany(mappedBy = "family")
-    private List<Users> users;
+    @OneToMany(mappedBy = "family", fetch = FetchType.EAGER)
+    private List<User> users;
 
-    @OneToMany(mappedBy = "family")
+    @OneToMany(mappedBy = "family", fetch = FetchType.EAGER)
     private List<Event> events;
 
     @OneToMany(mappedBy = "family")

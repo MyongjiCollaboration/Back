@@ -11,13 +11,11 @@ import java.util.UUID;
 public class EventResponseData {
     private String content;
     private String date;
-    private String place;
     private UUID eventId;
     public static EventResponseData of(Event event) {
         return new EventResponseData(
                 event.getContent(),
                 event.getDate().toString(),
-                event.getPlace(),
                 event.getId()
         );
     }

@@ -33,7 +33,7 @@ public class EventService {
         Family family = user.getFamily();
         List<Event> events = family.getEvents();
         List<EventResponseData> eventResponseDataList = events.stream()
-                .map(event -> new EventResponseData(event.getContent(), event.getDate().toString(), event.getPlace(), event.getId()))
+                .map(event -> new EventResponseData(event.getContent(), event.getDate().toString(), event.getId()))
                 .collect(Collectors.toList());
 
         EventResponseDataList response = EventResponseDataList.of(eventResponseDataList);
@@ -43,7 +43,6 @@ public class EventService {
 
     public void createEvent(Users user, EventRequestDto eventDto) {
         Event event = Event.builder()
-                .place(eventDto.getPlace())
                 .date(LocalDate.parse(eventDto.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .content(eventDto.getContent())
                 .family(user.getFamily())
@@ -61,7 +60,6 @@ public class EventService {
         log.info(eventDto.getContent());
 
         newEvent.setContent(eventDto.getContent());
-        newEvent.setPlace(eventDto.getPlace());
         newEvent.setDate(LocalDate.parse(eventDto.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
         this.eventRepository.save(newEvent);

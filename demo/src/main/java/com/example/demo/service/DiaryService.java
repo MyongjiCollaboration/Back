@@ -1,16 +1,22 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.DiaryDTO;
+import com.example.demo.dto.DiaryPhotoResponseDTO;
 import com.example.demo.entity.Diary;
+import com.example.demo.entity.DiaryPhoto;
+import com.example.demo.global.adapter.S3Adapter;
+import com.example.demo.repository.DiaryPhotoRepository;
 import com.example.demo.repository.DiaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,6 +28,8 @@ import java.util.stream.Collectors;
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
+    private final DiaryPhotoRepository diaryPhotoRepository;
+    private final S3Adapter s3Adapter; // S3 업로드를 위해 추가
 
     public ResponseEntity<List<DiaryDTO>> getAllDiaries() {
         List<Diary> diaries = diaryRepository.findAll();
@@ -37,8 +45,13 @@ public class DiaryService {
         if (diary.isPresent()) {
             DiaryDTO diaryDTO = convertToDTO(diary.get());
             return ResponseEntity.status(HttpStatus.OK).body(diaryDTO);
+//            return ResponseEntity.status(HttpStatus.OK).body(diary);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Diary not found with id " + diaryId);
+    }
+
+    public Optional<Diary> findDiaryEntityById(UUID diaryId) {
+        return diaryRepository.findById(diaryId);
     }
 
     public ResponseEntity<?> getDiaryByCreatedAt(LocalDate createdDate) {
@@ -57,22 +70,41 @@ public class DiaryService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No diaries found on date: " + createdDate);
     }
 
-    public ResponseEntity<?> createDiary(DiaryDTO diaryDTO) {
+    public ResponseEntity<?> createDiary(DiaryDTO diaryDTO, List<MultipartFile> files) {
         Diary newDiary = new Diary();
+        newDiary.setPhotos(new ArrayList<>()); // 빈 리스트로 초기화
+
         Diary createdDiary = this.setEntityData(diaryDTO, newDiary);
 
+        // 다이어리 저장
         Diary savedDiary = diaryRepository.save(createdDiary);
+
+        // 사진 저장
+        if (files != null && !files.isEmpty()) {
+            savePhotosToDiary(savedDiary, files);
+            // 사진이 저장된 후 다이어리를 다시 조회하여 photos 리스트 업데이트
+            savedDiary = diaryRepository.findById(savedDiary.getId()).orElse(savedDiary);
+        }
+
         DiaryDTO savedDiaryDTO = convertToDTO(savedDiary);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedDiaryDTO);
     }
 
-    public ResponseEntity<?> updateDiary(UUID diaryId, DiaryDTO diaryDTO) {
+
+    public ResponseEntity<?> updateDiary(UUID diaryId, DiaryDTO diaryDTO, List<MultipartFile> files) {
         Optional<Diary> diaryOptional = diaryRepository.findById(diaryId);
         if (diaryOptional.isPresent()) {
             Diary diary = diaryOptional.get();
             Diary changedDiary = this.setEntityData(diaryDTO, diary);
 
+            // 다이어리 저장
             Diary savedDiary = diaryRepository.save(changedDiary);
+
+            // 사진 저장
+            if (files != null && !files.isEmpty()) {
+                savePhotosToDiary(savedDiary, files);
+            }
+
             DiaryDTO savedDiaryDTO = convertToDTO(savedDiary);
             return ResponseEntity.status(HttpStatus.OK).body(savedDiaryDTO);
         } else {
@@ -83,10 +115,30 @@ public class DiaryService {
     public ResponseEntity<?> deleteDiary(UUID diaryId) {
         Optional<Diary> diaryOptional = diaryRepository.findById(diaryId);
         if (diaryOptional.isPresent()) {
+            Diary diary = diaryOptional.get();
+
+            // 다이어리와 연관된 모든 사진 삭제
+            diary.getPhotos().forEach(photo -> {
+                s3Adapter.deleteImage(photo.getUrl()); // S3에서 사진 삭제
+                diaryPhotoRepository.delete(photo); // DB에서 사진 삭제
+            });
+
+            // 다이어리 삭제
             diaryRepository.deleteById(diaryId);
             return ResponseEntity.status(HttpStatus.OK).body("Diary deleted successfully");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Diary not found with id " + diaryId);
+    }
+
+    // 다이어리에 사진 추가
+    private void savePhotosToDiary(Diary diary, List<MultipartFile> files) {
+        files.forEach(file -> {
+            DiaryPhoto diaryPhoto = new DiaryPhoto();
+            String url = s3Adapter.uploadImage(file, "diary");
+            diaryPhoto.setUrl(url);
+            diaryPhoto.setDiary(diary);
+            diaryPhotoRepository.save(diaryPhoto);
+        });
     }
 
     // Diary 엔티티를 업데이트하는 메서드
@@ -97,6 +149,7 @@ public class DiaryService {
         if (diary.getCreatedAt() == null) {
             diary.setCreatedAt(LocalDateTime.now());
         }
+
         return diary;
     }
 
@@ -107,7 +160,17 @@ public class DiaryService {
         diaryDTO.setTitle(diary.getTitle());
         diaryDTO.setContent(diary.getContent());
         diaryDTO.setCreatedAt(diary.getCreatedAt());
-//        diaryDTO.setModifiedDate(diary.getModifiedDate());
+
+        // DiaryPhoto 정보를 DiaryPhotoResponseDTO로 변환하여 설정
+        List<DiaryPhotoResponseDTO> photoDTOs = diary.getPhotos().stream()
+                .map(photo -> DiaryPhotoResponseDTO.builder()
+                        .id(photo.getId())
+                        .url(photo.getUrl())
+                        .build())
+                .collect(Collectors.toList());
+
+        diaryDTO.setPhotos(photoDTOs); // 사진 정보 추가
         return diaryDTO;
     }
+
 }

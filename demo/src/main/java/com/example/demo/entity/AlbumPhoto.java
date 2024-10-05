@@ -5,10 +5,8 @@ import lombok.Data;
 
 @Entity
 @Data
-public class AlbumPhoto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AlbumPhoto extends BaseEntity {
+
     private String url;
 
     @ManyToOne

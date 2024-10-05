@@ -7,10 +7,8 @@ import java.util.List;
 
 @Entity
 @Data
-public class Reaction {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Reaction extends BaseEntity {
+
 
     private int missu;
     private int loveu;

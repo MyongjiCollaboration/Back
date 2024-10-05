@@ -6,10 +6,8 @@ import java.util.List;
 
 @Data
 @Entity
-public class Family {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Family extends BaseEntity{
+
     String name;
 
     @OneToMany(mappedBy = "family")

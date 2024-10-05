@@ -5,10 +5,8 @@ import lombok.Data;
 
 @Entity
 @Data
-public class ReactionLog {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ReactionLog extends BaseEntity {
+
 
     @ManyToOne
     @JoinColumn(name = "reaction")

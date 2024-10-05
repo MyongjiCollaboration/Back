@@ -7,10 +7,8 @@ import java.util.List;
 
 @Data
 @Entity
-public class Users {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Users extends BaseEntity {
+
     private String name;
     private String email;
     private String role;

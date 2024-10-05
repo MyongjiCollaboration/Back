@@ -7,10 +7,8 @@ import java.util.List;
 
 @Entity
 @Data
-public class Album {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Album extends BaseEntity{
+
     private String name;
 
     @ManyToOne

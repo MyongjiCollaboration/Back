@@ -5,10 +5,8 @@ import lombok.Data;
 
 @Entity
 @Data
-public class QuizAnswer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class QuizAnswer extends BaseEntity {
+
     private String content;
 
     @ManyToOne

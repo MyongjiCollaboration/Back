@@ -7,10 +7,8 @@ import java.util.List;
 
 @Entity
 @Data
-public class Diary {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Diary extends BaseEntity {
+
     private String title;
     private String content;
 

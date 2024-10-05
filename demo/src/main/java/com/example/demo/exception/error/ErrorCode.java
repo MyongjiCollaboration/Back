@@ -10,6 +10,7 @@ public enum ErrorCode {
     INVALID_EMAIL_OR_PASSWORD("4010", "등록되지 않은 이메일 또는 비밀번호를 잘못 입력했습니다."),
     COOKIE_NOT_FOUND("4011", "쿠키를 찾을 수 없습니다."),
     INVALID_TOKEN("4012", "유효하지 않은 토큰입니다."),
+    UNAUTHORIZED_USER("4013", "유효하지 않은 사용자 입니다."),
 
     //ForbiddenException
     NO_ACCESS("4030", "접근 권한이 없습니다."),
@@ -17,6 +18,8 @@ public enum ErrorCode {
     //NotFoundException
     USER_NOT_FOUND("4040","존재하지 않는 사용자입니다."),
     NOT_FOUND_PAGE("4041","존재하지 않는 페이지입니다."),
+    EVENT_NOT_FOUND("4042", "존재하지 않는 페이지입니다."),
+    FAMILY_NOT_FOUND("4043", "존재하지 않는 페이지입니다."),
 
     //ConflictException
     DUPLICATED_NAME("4090","이미 사용 중인 이름입니다."),

@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -10,11 +11,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Event extends BaseEntity {
-    private String name;
     private String content;
     private String place;
-    private String date;
-    private String time;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family")

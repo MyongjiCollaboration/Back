@@ -14,6 +14,7 @@ import java.util.List;
 public class Family extends BaseEntity{
 
     String name;
+    String code;
 
     @OneToMany(mappedBy = "family", fetch = FetchType.EAGER)
     private List<Users> users;

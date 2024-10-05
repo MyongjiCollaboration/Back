@@ -10,7 +10,6 @@ import lombok.*;
 @Entity
 public class ReactionLog extends BaseEntity {
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reaction")
     private Reaction reaction;

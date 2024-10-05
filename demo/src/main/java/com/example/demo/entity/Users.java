@@ -18,7 +18,7 @@ public class Users extends BaseEntity {
     private String password;
     private String birthDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "family")
     private Family family;
 

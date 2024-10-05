@@ -12,7 +12,7 @@ public class DiaryPhoto extends BaseEntity {
 
     private String url;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary")
     private Diary diary;
 }

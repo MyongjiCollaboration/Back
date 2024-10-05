@@ -15,7 +15,7 @@ public class Event extends BaseEntity {
     private String date;
     private String time;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family")
     private Family family;
 }

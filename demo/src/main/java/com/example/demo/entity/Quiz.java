@@ -12,12 +12,10 @@ import java.util.UUID;
 @Setter
 @Entity
 public class Quiz extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family")
     private Family family;
 

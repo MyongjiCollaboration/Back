@@ -12,7 +12,7 @@ public class AlbumPhoto extends BaseEntity {
 
     private String url;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album")
     private Album album;
 }

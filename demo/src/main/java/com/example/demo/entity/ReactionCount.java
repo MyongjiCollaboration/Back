@@ -11,11 +11,11 @@ public class ReactionCount extends BaseEntity{
 
     private int count;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
     private Users user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reaction")
     private Reaction reaction;
 

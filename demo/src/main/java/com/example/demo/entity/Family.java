@@ -14,10 +14,10 @@ public class Family extends BaseEntity{
 
     String name;
 
-    @OneToMany(mappedBy = "family")
+    @OneToMany(mappedBy = "family", fetch = FetchType.EAGER)
     private List<Users> users;
 
-    @OneToMany(mappedBy = "family")
+    @OneToMany(mappedBy = "family", fetch = FetchType.EAGER)
     private List<Event> events;
 
     @OneToMany(mappedBy = "family")

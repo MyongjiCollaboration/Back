@@ -14,7 +14,7 @@ public class Album extends BaseEntity{
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family")
     private Family family;
 

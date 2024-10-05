@@ -23,8 +23,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String accessToken = AuthenticationExtractor.extract(request);
+        log.info("extract");
+
         UUID userId = UUID.fromString(jwtTokenProvider.getPayload(accessToken));
+        log.info("getPayload");
+
         Users user = this.userRepository.findById(userId).orElseThrow(() -> new RuntimeException());
+        log.info("유저 찾기");
+
         authenticationContext.setPrincipal(user);
         log.info("set user");
         return true;

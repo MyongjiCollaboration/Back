@@ -33,16 +33,21 @@ public class AuthService {
     private final PasswordHashEncryption passwordHashEncryption;
     private final FamilyRepository familyRepository;
 
-    // 회원 가입시 family code 어떻게 할지 고민해 봐야함.
     public void signup(SignupDto signupDto) {
         if (userRepository.findByName(signupDto.getNickname()).isPresent()) {
-            throw new ConflictException(ErrorCode.DUPLICATED_NAME);
+            log.info("1");
+            // throw new ConflictException(ErrorCode.DUPLICATED_NAME);
+            throw new RuntimeException("이름 중복");
         }
+        log.info("2");
 
         // 중복 이메일 회원가입 방지
         if (userRepository.findByEmail(signupDto.getEmail()).isPresent()) {
-            throw new ConflictException(ErrorCode.DUPLICATED_EMAIL);
+            //throw new ConflictException(ErrorCode.DUPLICATED_EMAIL);
+            throw new RuntimeException("이메일 중복");
         }
+        log.info("3");
+
         // 비밀번호 암호화
         String plainPassword = signupDto.getPassword();
         String hashedPassword = passwordHashEncryption.encrypt(plainPassword);

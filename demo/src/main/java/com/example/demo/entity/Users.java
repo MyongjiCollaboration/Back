@@ -14,6 +14,7 @@ import java.util.List;
 public class Users extends BaseEntity {
 
     private String name;
+    @Column(unique = true)
     private String email;
     private String role;
     private String password;

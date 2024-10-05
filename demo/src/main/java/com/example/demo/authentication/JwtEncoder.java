@@ -1,5 +1,6 @@
 package com.example.demo.authentication;
 
+import com.example.demo.exception.UnauthorizedException;
 import com.example.demo.exception.error.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +22,6 @@ public class JwtEncoder {
         if (value.startsWith(TOKEN_TYPE)) {
             return value.substring(TOKEN_TYPE.length());
         }
-        // throw new UnauthorizedException(ErrorCode.INVALID_TOKEN, "token decode 실패");
-        throw new RuntimeException();
-
+        throw new UnauthorizedException(ErrorCode.INVALID_TOKEN, "token decode 실패");
     }
 }

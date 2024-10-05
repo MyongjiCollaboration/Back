@@ -12,6 +12,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -21,8 +24,8 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping
-    public ResponseEntity<ResponseDto<EventResponseDataList>> getEvents(@AuthenticatedUser Users user) {
-        EventResponseDataList eventResponseDataList = this.eventService.getEvents(user);
+    public ResponseEntity<ResponseDto<Map<String, List<EventResponseData>>>> getEvents(@AuthenticatedUser Users user) {
+        Map<String, List<EventResponseData>> eventResponseDataList = this.eventService.getEventsByDate(user);
         return new ResponseEntity<>(ResponseDto.res(HttpStatus.OK, "OK", eventResponseDataList), HttpStatus.OK);
     }
     @PostMapping

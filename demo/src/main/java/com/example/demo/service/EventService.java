@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,16 @@ public class EventService {
         EventResponseDataList response = EventResponseDataList.of(eventResponseDataList);
 
         return response;
+    }
+    public Map<String, List<EventResponseData>> getEventsByDate(Users user) {
+        Family family = user.getFamily();
+        List<Event> events = family.getEvents();
+
+        Map<String, List<EventResponseData>> eventsByDate = events.stream()
+                .map(event -> new EventResponseData(event.getContent(), event.getDate().toString(), event.getId()))
+                .collect(Collectors.groupingBy(EventResponseData::getDate));
+
+        return eventsByDate;
     }
 
     public void createEvent(Users user, EventRequestDto eventDto) {

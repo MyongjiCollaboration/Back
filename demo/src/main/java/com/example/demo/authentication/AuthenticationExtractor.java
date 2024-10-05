@@ -1,5 +1,7 @@
 package com.example.demo.authentication;
 
+import com.example.demo.exception.UnauthorizedException;
+import com.example.demo.exception.error.ErrorCode;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -15,9 +17,7 @@ public class AuthenticationExtractor {
                 }
             }
         }
-        // throw new UnauthorizedException(ErrorCode.COOKIE_NOT_FOUND, "extract할 cookie를 찾을 수 없습니다.");
-        throw new RuntimeException();
-
+        throw new UnauthorizedException(ErrorCode.COOKIE_NOT_FOUND, "extract할 cookie를 찾을 수 없습니다.");
     }
 }
 

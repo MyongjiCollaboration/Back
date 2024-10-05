@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.authentication.user.AuthenticatedUser;
 import com.example.demo.dto.AlbumPhotoDto;
 import com.example.demo.dto.AlbumPhotoResponseDto;
 import com.example.demo.entity.AlbumPhoto;
+import com.example.demo.entity.Users;
 import com.example.demo.service.AlbumPhotoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

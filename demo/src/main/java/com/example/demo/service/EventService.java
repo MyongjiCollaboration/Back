@@ -6,6 +6,10 @@ import com.example.demo.dto.response.event.EventResponseDataList;
 import com.example.demo.entity.Event;
 import com.example.demo.entity.Family;
 import com.example.demo.entity.Users;
+import com.example.demo.exception.ForbiddenException;
+import com.example.demo.exception.NotFoundException;
+import com.example.demo.exception.UnauthorizedException;
+import com.example.demo.exception.error.ErrorCode;
 import com.example.demo.repository.EventRepository;
 import com.example.demo.repository.FamilyRepository;
 import lombok.AllArgsConstructor;
@@ -50,7 +54,7 @@ public class EventService {
 
     public EventResponseData updateEvent(Users user, EventRequestDto eventDto, UUID eventId) {
         Event newEvent = this.eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("해당 이벤트를 찾을 수 없음."));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.EVENT_NOT_FOUND));
         validateEvent(newEvent, user);
 
         log.info(eventDto.getDate());
@@ -67,7 +71,7 @@ public class EventService {
 
     public void deleteEvent(UUID eventId, Users user) {
         Event oldEvent = this.eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("삭제할 수 없음"));
+                .orElseThrow(() -> new ForbiddenException(ErrorCode.NO_ACCESS));
         validateEvent(oldEvent, user);
         this.eventRepository.delete(oldEvent);
     }
@@ -76,7 +80,7 @@ public class EventService {
         if(!event.getFamily().getId().equals(user.getFamily().getId())){
             log.info(event.getFamily().getId().toString());
             log.info(user.getFamily().getId().toString());
-            throw new RuntimeException("유저는 해당 가족 구성원이 아님.");
+            throw new ForbiddenException(ErrorCode.NO_ACCESS);
         }
     }
 }

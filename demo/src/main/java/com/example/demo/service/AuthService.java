@@ -7,6 +7,10 @@ import com.example.demo.dto.request.user.SignupDto;
 import com.example.demo.entity.Family;
 import com.example.demo.authentication.JwtEncoder;
 import com.example.demo.entity.Users;
+import com.example.demo.exception.ConflictException;
+import com.example.demo.exception.NotFoundException;
+import com.example.demo.exception.UnauthorizedException;
+import com.example.demo.exception.error.ErrorCode;
 import com.example.demo.repository.FamilyRepository;
 import com.example.demo.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,16 +35,14 @@ public class AuthService {
 
     // 회원 가입시 family code 어떻게 할지 고민해 봐야함.
     public void signup(SignupDto signupDto) {
-//        if (userRepository.findByName(signupDto.getNickname()).isPresent()) {
-//           // throw new ConflictException(ErrorCode.DUPLICATED_NAME);
-//            throw new RuntimeException("중복 이름");
-//        }
-//
-//        // 중복 이메일 회원가입 방지
-//        if (userRepository.findByEmail(signupDto.getEmail()).isPresent()) {
-//           // throw new ConflictException(ErrorCode.DUPLICATED_EMAIL);
-//            throw new RuntimeException("중복 아이디");
-//        }
+        if (userRepository.findByName(signupDto.getNickname()).isPresent()) {
+            throw new ConflictException(ErrorCode.DUPLICATED_NAME);
+        }
+
+        // 중복 이메일 회원가입 방지
+        if (userRepository.findByEmail(signupDto.getEmail()).isPresent()) {
+            throw new ConflictException(ErrorCode.DUPLICATED_EMAIL);
+        }
         // 비밀번호 암호화
         String plainPassword = signupDto.getPassword();
         String hashedPassword = passwordHashEncryption.encrypt(plainPassword);
@@ -56,12 +58,11 @@ public class AuthService {
         log.info("유저 저장 성공");
 
         if(signupDto.getFamilyCode() == null){
-            log.info("패밀리 코드가 없는 경우");
             createFamily(newUser);
         }else{
             Family family = this.familyRepository.findByCode(signupDto.getFamilyCode());
             if (family == null) {
-                throw new RuntimeException("유효하지 않은 패밀리 코드입니다.");
+                throw new NotFoundException(ErrorCode.FAMILY_NOT_FOUND);
             }
             family.getUsers().add(newUser);
             newUser.setFamily(family);
@@ -85,15 +86,13 @@ public class AuthService {
     public void login(LoginDto loginDto, HttpServletResponse response) {
 
         Users user = this.userRepository.findByEmail(loginDto.getEmail())
-                .orElseThrow(() -> new RuntimeException("찾을 수 없음"));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
         if(user == null) {
-            //throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
-            throw new RuntimeException();
+            throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
         }
 
         if (!passwordHashEncryption.matches(loginDto.getPassword(), user.getPassword())) {
-            //throw new UnauthorizedException(ErrorCode.UNAUTHORIZED_USER);
-            throw new RuntimeException();
+            throw new UnauthorizedException(ErrorCode.UNAUTHORIZED_USER);
         }
 
         String payload = user.getId().toString();

@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Event extends BaseEntity {
     private String content;
-    private String place;
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -10,7 +10,5 @@ public class EventRequestDto {
     @NotNull
     private String content;
     @NotNull
-    private String place;
-    @NotNull
     private String date;
 }

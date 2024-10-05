@@ -6,9 +6,11 @@ import com.example.demo.service.DiaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -28,19 +30,26 @@ public class DiaryController {
         return diaryService.getDiaryById(id);
     }
 
-    //2024-10-05식 String으로 받게 되어 있음
+    //2024-10-05식으로 받게 되어 있음
     @GetMapping("/{DiaryCreatedAt}")
     public ResponseEntity<?> getDiaryByCreatedAt(@PathVariable("DiaryCreatedAt") LocalDate createdAt) {
         return diaryService.getDiaryByCreatedAt(createdAt);
     }
 
-    @PostMapping
-    public ResponseEntity<?> createDiary(@RequestBody DiaryDTO diaryDTO){ return diaryService.createDiary(diaryDTO);}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable UUID id,
-                                        @RequestBody DiaryDTO diaryDTO) {
-        return diaryService.updateDiary(id, diaryDTO);
+
+    @PostMapping
+    public ResponseEntity<?> createDiary(@RequestPart("diary") DiaryDTO diaryDTO,
+                                         @RequestPart("files") List<MultipartFile> files) {
+        return diaryService.createDiary(diaryDTO, files);
+    }
+
+    // 다이어리 업데이트
+    @PutMapping("/{diaryId}")
+    public ResponseEntity<?> updateDiary(@PathVariable UUID diaryId,
+                                         @RequestPart("diary") DiaryDTO diaryDTO,
+                                         @RequestPart("files") List<MultipartFile> files) {
+        return diaryService.updateDiary(diaryId, diaryDTO, files);
     }
 
     @DeleteMapping("/{id}")

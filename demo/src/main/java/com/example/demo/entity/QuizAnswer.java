@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +19,6 @@ public class QuizAnswer extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
-    private User user;
+    private Users user;
 
 }
